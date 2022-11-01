@@ -11,7 +11,13 @@ The supermarket runs special deals, e.g.
 
 These are just examples: the actual special deals change each week.
 
+## New feature: special deals database
 
+Business intelligence wants to optimize our special deals to improve revenue.
+At the moment they are based on long years of experience and are pretty much
+hard coded. They want to organize the offers in a database.
+Our sysadmin will take care of the database but you should prepare the codebase
+for the change coming so we can connect the systems once the database goes online.
 
 ## New feature: HTML receipt
 
