@@ -32,6 +32,28 @@ we do need someone to keep duplication between the reports to a bare minimum.
 The owner of the system has a new feature request. They want to introduce a new kind of special offer - bundles. When you buy all the items in a product bundle
 you get 10% off the total for those items. For example you could make a bundle offer of one toothbrush and one toothpaste. If you then you buy one toothbrush and one toothpaste, the discount will be 10% of €0.99 + €1.79. If you instead buy two toothbrushes and one toothpaste, you get the same discount as if you'd bought only one of each - ie only complete bundles are discounted.
 
+
+## Available Programming Languages
+
+To avoid setup issues as much as possible, we tried to check the stater code
+for the provided languages.
+
+| Language   | Status             |
+|------------|--------------------|
+| c          | ✅                 |
+| cpp        | ✅                 |
+| csharp-ms  | 🤷                 |
+| csharp     | ✅                 |
+| go         | ✅                 |
+| java       | ✅                 |
+| kotlin     | ✅                 |
+| php        | ✅ (for PHP 8.0)   |
+| python     | ✅                 |
+| ruby       | ✅ (for Ruby 2.7 ) |
+| swift      | ✅                 |
+| typescript | ✅                 |
+
 ---
 
-This kata was slightly modified for the purpose of the coderetreat.
+This fork is a slightly modified version of the original Kata from Emily Bache.
+The introduced changes reflect the requirements of the [GDCR22](https://swkwien.github.io/gdcr22/).
