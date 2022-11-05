@@ -13,10 +13,10 @@ import java.util.function.Function;
 
 public class Teller {
 
-    private final SupermarketCatalog catalog;
+    private final PriceFor catalog;
     private final Map<Product, Offer> offers = new HashMap<>();
 
-    public Teller(SupermarketCatalog catalog) {
+    public Teller(PriceFor catalog) {
         this.catalog = catalog;
     }
 

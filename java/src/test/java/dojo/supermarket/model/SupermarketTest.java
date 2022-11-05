@@ -1,6 +1,7 @@
 package dojo.supermarket.model;
 
 import dojo.supermarket.ReceiptPrinter;
+import dojo.supermarket.model.billing.CatalogPriceForAdapter;
 import dojo.supermarket.model.billing.Receipt;
 import dojo.supermarket.model.billing.SpecialOfferType;
 import dojo.supermarket.model.billing.Teller;
@@ -24,7 +25,7 @@ public class SupermarketTest {
     @BeforeEach
     public void setUp() {
         catalog = new FakeCatalog();
-        teller = new Teller(catalog);
+        teller = new Teller(new CatalogPriceForAdapter(catalog));
         theCart = new ShoppingCart();
 
         toothbrush = new Product("toothbrush", ProductUnit.EACH);
