@@ -1,4 +1,9 @@
-package dojo.supermarket.model;
+package dojo.supermarket.model.shopping;
+
+import dojo.supermarket.model.billing.Offer;
+import dojo.supermarket.model.stock.Product;
+import dojo.supermarket.model.billing.SpecialOfferType;
+import dojo.supermarket.model.billing.Discount;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +17,11 @@ public class ShoppingCart {
     private final List<ProductQuantity> items = new ArrayList<>();
     private final Map<Product, Double> productQuantities = new HashMap<>();
 
-    List<ProductQuantity> getItems() {
+    public List<ProductQuantity> getItems() {
         return Collections.unmodifiableList(items);
     }
 
-    void addItem(Product product) {
+    public void addItem(Product product) {
         addItemQuantity(product, 1.0);
     }
 
@@ -33,7 +38,7 @@ public class ShoppingCart {
         }
     }
 
-    List<Discount> handleOffers(Map<Product, Offer> offers, Function<Product, Double> getUnitPrice) {
+    public List<Discount> handleOffers(Map<Product, Offer> offers, Function<Product, Double> getUnitPrice) {
 
         List<Discount> discounts = new ArrayList<>();
         for (Map.Entry<Product, Double> entry: productQuantities().entrySet()) {

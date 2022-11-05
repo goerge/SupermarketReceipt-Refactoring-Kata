@@ -1,4 +1,6 @@
-package dojo.supermarket.model;
+package dojo.supermarket.model.billing;
+
+import dojo.supermarket.model.stock.Product;
 
 public class Discount {
 

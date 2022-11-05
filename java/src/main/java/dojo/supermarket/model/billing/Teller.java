@@ -1,4 +1,9 @@
-package dojo.supermarket.model;
+package dojo.supermarket.model.billing;
+
+import dojo.supermarket.model.shopping.ProductQuantity;
+import dojo.supermarket.model.shopping.ShoppingCart;
+import dojo.supermarket.model.stock.Product;
+import dojo.supermarket.model.stock.SupermarketCatalog;
 
 import java.util.HashMap;
 import java.util.List;

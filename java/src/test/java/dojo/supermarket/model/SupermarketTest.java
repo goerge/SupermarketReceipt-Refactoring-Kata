@@ -1,6 +1,13 @@
 package dojo.supermarket.model;
 
 import dojo.supermarket.ReceiptPrinter;
+import dojo.supermarket.model.billing.Receipt;
+import dojo.supermarket.model.billing.SpecialOfferType;
+import dojo.supermarket.model.billing.Teller;
+import dojo.supermarket.model.shopping.ShoppingCart;
+import dojo.supermarket.model.stock.Product;
+import dojo.supermarket.model.stock.ProductUnit;
+import dojo.supermarket.model.stock.SupermarketCatalog;
 import org.approvaltests.Approvals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

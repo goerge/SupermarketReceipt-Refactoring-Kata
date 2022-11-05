@@ -1,4 +1,6 @@
-package dojo.supermarket.model;
+package dojo.supermarket.model.stock;
+
+import dojo.supermarket.model.stock.Product;
 
 public interface SupermarketCatalog {
 
