@@ -36,8 +36,9 @@ public class ShoppingCart {
     List<Discount> handleOffers(Map<Product, Offer> offers, Function<Product, Double> getUnitPrice) {
 
         List<Discount> discounts = new ArrayList<>();
-        for (Product p: productQuantities().keySet()) {
-            double quantity = productQuantities.get(p);
+        for (Map.Entry<Product, Double> entry: productQuantities().entrySet()) {
+            Product p = entry.getKey();
+            double quantity = entry.getValue();
             if (offers.containsKey(p)) {
                 Offer offer = offers.get(p);
                 double unitPrice = getUnitPrice.apply(p);
