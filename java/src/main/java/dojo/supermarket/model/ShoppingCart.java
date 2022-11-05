@@ -52,6 +52,10 @@ public class ShoppingCart {
 
     private static Discount calculateDiscount(Function<Product, Double> getUnitPrice, Product product, double quantity, Offer offer) {
         double unitPrice = getUnitPrice.apply(product);
+        if (offer.offerType == SpecialOfferType.TEN_PERCENT_DISCOUNT) {
+            return new Discount(product, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
+        }
+
         int quantityAsInt = (int) quantity;
         if (offer.offerType == SpecialOfferType.TWO_FOR_AMOUNT && quantityAsInt >= 2) {
             int intDivision = quantityAsInt / 2;
@@ -65,9 +69,6 @@ public class ShoppingCart {
         if (offer.offerType == SpecialOfferType.THREE_FOR_TWO && quantityAsInt > 2) {
             double discountAmount = quantity * unitPrice - ((numberOfBulks * 2 * unitPrice) + quantityAsInt % 3 * unitPrice);
             return new Discount(product, "3 for 2", -discountAmount);
-        }
-        if (offer.offerType == SpecialOfferType.TEN_PERCENT_DISCOUNT) {
-            return new Discount(product, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
         }
         if (offer.offerType == SpecialOfferType.FIVE_FOR_AMOUNT && quantityAsInt >= 5) {
             double discountTotal = unitPrice * quantity - (offer.argument * numberOfBulks + quantityAsInt % 5 * unitPrice);
