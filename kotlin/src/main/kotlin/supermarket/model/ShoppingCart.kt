@@ -5,11 +5,11 @@ import java.util.HashMap
 
 class ShoppingCart {
 
-    private val items = ArrayList<ProductQuantity>()
+    private val items = ArrayList<CartItem>()
     internal var productQuantities: MutableMap<Product, Double> = HashMap()
 
 
-    internal fun getItems(): List<ProductQuantity> {
+    internal fun getItems(): List<CartItem> {
         return ArrayList(items)
     }
 
@@ -23,7 +23,7 @@ class ShoppingCart {
 
 
     fun addItemQuantity(product: Product, quantity: Double) {
-        items.add(ProductQuantity(product, quantity))
+        items.add(CartItem(product, quantity))
         if (productQuantities.containsKey(product)) {
             productQuantities[product] = productQuantities[product]!! + quantity
         } else {
