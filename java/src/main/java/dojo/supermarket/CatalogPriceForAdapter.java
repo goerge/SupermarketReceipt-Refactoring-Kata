@@ -1,9 +1,10 @@
-package dojo.supermarket.model.billing;
+package dojo.supermarket;
 
+import dojo.supermarket.model.billing.PriceFor;
 import dojo.supermarket.model.stock.Product;
 import dojo.supermarket.model.stock.SupermarketCatalog;
 
-public class CatalogPriceForAdapter implements PriceFor{
+public class CatalogPriceForAdapter implements PriceFor {
 
     private SupermarketCatalog catalog;
 

@@ -25,6 +25,9 @@ public class Receipt {
     public void addProduct(Product p, double quantity, double price, double totalPrice) {
         items.add(new ReceiptItem(p, quantity, price, totalPrice));
     }
+    public void addProduct(Product p, double quantity, double price) {
+        items.add(new ReceiptItem(p, quantity, price, quantity * price));
+    }
 
     public List<ReceiptItem> getItems() {
         return Collections.unmodifiableList(items);

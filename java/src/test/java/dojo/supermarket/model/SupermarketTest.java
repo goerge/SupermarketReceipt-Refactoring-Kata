@@ -1,10 +1,9 @@
 package dojo.supermarket.model;
 
+import dojo.supermarket.CatalogPriceForAdapter;
 import dojo.supermarket.ReceiptPrinter;
-import dojo.supermarket.model.billing.CatalogPriceForAdapter;
-import dojo.supermarket.model.billing.Receipt;
-import dojo.supermarket.model.billing.SpecialOfferType;
-import dojo.supermarket.model.billing.Teller;
+import dojo.supermarket.ShoppingCartItemListAdapter;
+import dojo.supermarket.model.billing.*;
 import dojo.supermarket.model.shopping.ShoppingCart;
 import dojo.supermarket.model.stock.Product;
 import dojo.supermarket.model.stock.ProductUnit;
@@ -41,14 +40,14 @@ public class SupermarketTest {
 
     @Test
     public void an_empty_shopping_cart_should_cost_nothing() {
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
     @Test
     public void one_normal_item() {
         theCart.addItem(toothbrush);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -56,7 +55,7 @@ public class SupermarketTest {
     public void two_normal_items() {
         theCart.addItem(toothbrush);
         theCart.addItem(rice);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -66,7 +65,7 @@ public class SupermarketTest {
         theCart.addItem(toothbrush);
         theCart.addItem(toothbrush);
         teller.addSpecialOffer(SpecialOfferType.THREE_FOR_TWO, toothbrush, catalog.getUnitPrice(toothbrush));
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -74,7 +73,7 @@ public class SupermarketTest {
     public void buy_two_get_one_free_but_insufficient_in_basket() {
         theCart.addItem(toothbrush);
         teller.addSpecialOffer(SpecialOfferType.THREE_FOR_TWO, toothbrush, catalog.getUnitPrice(toothbrush));
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
     @Test
@@ -85,14 +84,14 @@ public class SupermarketTest {
         theCart.addItem(toothbrush);
         theCart.addItem(toothbrush);
         teller.addSpecialOffer(SpecialOfferType.THREE_FOR_TWO, toothbrush, catalog.getUnitPrice(toothbrush));
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
     @Test
     public void loose_weight_product() {
         theCart.addItemQuantity(apples, .5);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -100,7 +99,7 @@ public class SupermarketTest {
     public void percent_discount() {
         theCart.addItem(rice);
         teller.addSpecialOffer(SpecialOfferType.TEN_PERCENT_DISCOUNT, rice, 10.0);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -109,7 +108,7 @@ public class SupermarketTest {
         theCart.addItem(cherryTomatoes);
         theCart.addItem(cherryTomatoes);
         teller.addSpecialOffer(SpecialOfferType.TWO_FOR_AMOUNT, cherryTomatoes,.99);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -117,7 +116,7 @@ public class SupermarketTest {
     public void xForY_discount_with_insufficient_in_basket() {
         theCart.addItem(cherryTomatoes);
         teller.addSpecialOffer(SpecialOfferType.TWO_FOR_AMOUNT, cherryTomatoes,.99);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -125,7 +124,7 @@ public class SupermarketTest {
     public void FiveForY_discount() {
         theCart.addItemQuantity(apples, 5);
         teller.addSpecialOffer(SpecialOfferType.FIVE_FOR_AMOUNT, apples,6.99);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -133,7 +132,7 @@ public class SupermarketTest {
     public void FiveForY_discount_withSix() {
         theCart.addItemQuantity(apples, 6);
         teller.addSpecialOffer(SpecialOfferType.FIVE_FOR_AMOUNT, apples,5.99);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -141,7 +140,7 @@ public class SupermarketTest {
     public void FiveForY_discount_withSixteen() {
         theCart.addItemQuantity(apples, 16);
         teller.addSpecialOffer(SpecialOfferType.FIVE_FOR_AMOUNT, apples,7.99);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 
@@ -149,7 +148,7 @@ public class SupermarketTest {
     public void FiveForY_discount_withFour() {
         theCart.addItemQuantity(apples, 4);
         teller.addSpecialOffer(SpecialOfferType.FIVE_FOR_AMOUNT, apples,8.99);
-        Receipt receipt = teller.checksOutArticlesFrom(theCart);
+        Receipt receipt = teller.checksOutArticlesFrom(new ShoppingCartItemListAdapter(theCart));
         Approvals.verify(new ReceiptPrinter(40).printReceipt(receipt));
     }
 }

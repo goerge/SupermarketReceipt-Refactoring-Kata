@@ -1,16 +1,8 @@
 package dojo.supermarket.model.shopping;
 
-import dojo.supermarket.model.billing.Offer;
 import dojo.supermarket.model.stock.Product;
-import dojo.supermarket.model.billing.SpecialOfferType;
-import dojo.supermarket.model.billing.Discount;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+import java.util.*;
 
 public class ShoppingCart {
 
@@ -37,6 +29,4 @@ public class ShoppingCart {
             productQuantities.put(product, quantity);
         }
     }
-
-
 }

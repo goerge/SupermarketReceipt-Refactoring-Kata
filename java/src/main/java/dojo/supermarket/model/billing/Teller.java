@@ -1,62 +1,48 @@
 package dojo.supermarket.model.billing;
 
-import dojo.supermarket.model.shopping.ProductQuantity;
-import dojo.supermarket.model.shopping.ShoppingCart;
 import dojo.supermarket.model.stock.Product;
-import dojo.supermarket.model.stock.SupermarketCatalog;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Teller {
 
-    private final PriceFor catalog;
+    private final PriceFor priceFor;
     private final Map<Product, Offer> offers = new HashMap<>();
 
-    public Teller(PriceFor catalog) {
-        this.catalog = catalog;
+    public Teller(PriceFor priceFor) {
+        this.priceFor = priceFor;
     }
 
     public void addSpecialOffer(SpecialOfferType offerType, Product product, double argument) {
         offers.put(product, new Offer(offerType, product, argument));
     }
 
-    public Receipt checksOutArticlesFrom(ShoppingCart theCart) {
+    public Receipt checksOutArticlesFrom(ItemList items) {
         Receipt receipt = new Receipt();
-        List<ProductQuantity> productQuantities = theCart.getItems();
-        for (ProductQuantity pq: productQuantities) {
-            Product p = pq.getProduct();
-            double quantity = pq.getQuantity();
-            double unitPrice = catalog.getUnitPrice(p);
-            double price = quantity * unitPrice;
-            receipt.addProduct(p, quantity, unitPrice, price);
+        for (ItemList.Item item : items.getItems()) {
+            receipt.addProduct(item.getProduct(), item.getQuantity(), priceFor.getUnitPrice(item.getProduct()));
         }
-        handleOffers(offers, catalog::getUnitPrice, theCart.productQuantities()).forEach(receipt::addDiscount);
+
+        items.getItems()
+            .stream().map(ci -> ci.getProduct()).collect(Collectors.toSet())
+            .stream().map(product -> {
+                if (offers.containsKey(product)) {
+                    Offer offer = offers.get(product);
+                    return calculateDiscount(product, items.quantityOf(product), offer, priceFor::getUnitPrice);
+                }
+                return null;
+            })
+        .filter(Objects::nonNull)
+        .forEach(receipt::addDiscount);
 
         return receipt;
     }
 
-    public List<Discount> handleOffers(Map<Product, Offer> offers, Function<Product, Double> getUnitPrice, Map<Product, Double> productQuantities) {
-
-        List<Discount> discounts = new ArrayList<>();
-        for (Map.Entry<Product, Double> entry: productQuantities.entrySet()) {
-            Product product = entry.getKey();
-            double quantity = entry.getValue();
-            if (offers.containsKey(product)) {
-                Offer offer = offers.get(product);
-                Discount discount = calculateDiscount(getUnitPrice, product, quantity, offer);
-                if (discount != null) {
-                    discounts.add(discount);
-                }
-            }
-        }
-        return discounts;
-    }
-
-    private static Discount calculateDiscount(Function<Product, Double> getUnitPrice, Product product, double quantity, Offer offer) {
+    private static Discount calculateDiscount(Product product, double quantity, Offer offer, Function<Product, Double> getUnitPrice) {
         double unitPrice = getUnitPrice.apply(product);
         if (offer.offerType == SpecialOfferType.TEN_PERCENT_DISCOUNT) {
             return new Discount(product, offer.argument + "% off", -quantity * unitPrice * offer.argument / 100.0);
@@ -108,4 +94,5 @@ public class Teller {
         }
         return bulkSize;
     }
+
 }
