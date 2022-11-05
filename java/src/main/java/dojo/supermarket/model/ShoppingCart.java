@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class ShoppingCart {
 
@@ -32,13 +33,14 @@ public class ShoppingCart {
         }
     }
 
-    List<Discount> handleOffers(Map<Product, Offer> offers, SupermarketCatalog catalog) {
+    List<Discount> handleOffers(Map<Product, Offer> offers, Function<Product, Double> getUnitPrice) {
+
         List<Discount> discounts = new ArrayList<>();
         for (Product p: productQuantities().keySet()) {
             double quantity = productQuantities.get(p);
             if (offers.containsKey(p)) {
                 Offer offer = offers.get(p);
-                double unitPrice = catalog.getUnitPrice(p);
+                double unitPrice = getUnitPrice.apply(p);
                 int quantityAsInt = (int) quantity;
                 Discount discount = null;
                 int x = 1;
