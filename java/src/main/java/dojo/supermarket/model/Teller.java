@@ -27,7 +27,7 @@ public class Teller {
             double price = quantity * unitPrice;
             receipt.addProduct(p, quantity, unitPrice, price);
         }
-        theCart.handleOffers(receipt, offers, catalog);
+        theCart.handleOffers(offers, catalog).forEach(receipt::addDiscount);
 
         return receipt;
     }
