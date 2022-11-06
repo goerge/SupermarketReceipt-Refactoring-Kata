@@ -21,23 +21,25 @@ public class Teller {
         offers.put(product, new Offer(offerType, product, argument));
     }
 
-    public Receipt checksOutArticlesFrom(ItemList items) {
+    public Receipt checksOutArticlesFrom(ItemList itemList) {
         Receipt receipt = new Receipt();
-        for (ItemList.Item item : items.getItems()) {
-            receipt.addProduct(item.getProduct(), item.getQuantity(), priceFor.getUnitPrice(item.getProduct()));
-        }
+        itemList.getItems()
+            .forEach(item ->
+                receipt.addProduct(item.getProduct(), item.getQuantity(), priceFor.getUnitPrice(item.getProduct()))
+            );
 
-        items.getItems()
-            .stream().map(ci -> ci.getProduct()).collect(Collectors.toSet())
-            .stream().map(product -> {
-                if (offers.containsKey(product)) {
-                    Offer offer = offers.get(product);
-                    return calculateDiscount(product, items.quantityOf(product), offer, priceFor::getUnitPrice);
+        itemList.getItems().stream()
+            .map(ItemList.Item::getProduct)
+            .collect(Collectors.toSet()).stream()
+            .map(product -> {
+                Offer offer = offers.getOrDefault(product, null);
+                if(offer != null) {
+                    return calculateDiscount(product, itemList.quantityOf(product), offer, priceFor::getUnitPrice);
                 }
                 return null;
             })
-        .filter(Objects::nonNull)
-        .forEach(receipt::addDiscount);
+            .filter(Objects::nonNull)
+            .forEach(receipt::addDiscount);
 
         return receipt;
     }
